@@ -7,10 +7,16 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.jichicristina_moldovanpaul.bad_habits_tracker.R
+import com.jichicristina_moldovanpaul.bad_habits_tracker.data.local.AppDatabase
+import com.jichicristina_moldovanpaul.bad_habits_tracker.data.local.UserEntity
 import com.jichicristina_moldovanpaul.bad_habits_tracker.utils.SharedPrefsHelper
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class RegisterFragment : Fragment(R.layout.fragment_register) {
 
@@ -31,16 +37,22 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
             if (username.isBlank() || password.isBlank() || motivation.isBlank()) {
                 Toast.makeText(requireContext(), "Te rog completează toate datele!", Toast.LENGTH_SHORT).show()
             } else {
-                val prefs = SharedPrefsHelper(requireContext())
-                prefs.username = username
-                prefs.password = password
-                prefs.motivationMsg = motivation
-                prefs.isLoggedIn = true
+                val dao = AppDatabase.getDatabase(requireContext()).userDao()
+                val newUser = UserEntity(username = username, password = password, motivationMsg = motivation)
+                
+                viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
+                    val newId = dao.insertUser(newUser).toInt()
+                    
+                    withContext(Dispatchers.Main) {
+                        val prefs = SharedPrefsHelper(requireContext())
+                        prefs.loggedInUserId = newId
 
-                val navOptions = NavOptions.Builder()
-                    .setPopUpTo(R.id.loginFragment, true)
-                    .build()
-                findNavController().navigate(R.id.dashboardFragment, null, navOptions)
+                        val navOptions = NavOptions.Builder()
+                            .setPopUpTo(R.id.loginFragment, true)
+                            .build()
+                        findNavController().navigate(R.id.dashboardFragment, null, navOptions)
+                    }
+                }
             }
         }
 

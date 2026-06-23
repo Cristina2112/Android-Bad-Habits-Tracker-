@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import com.jichicristina_moldovanpaul.bad_habits_tracker.R
 import com.jichicristina_moldovanpaul.bad_habits_tracker.data.local.AppDatabase
 import com.jichicristina_moldovanpaul.bad_habits_tracker.data.local.HabitEntity
+import com.jichicristina_moldovanpaul.bad_habits_tracker.utils.SharedPrefsHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -57,9 +58,13 @@ class AddHabitFragment : Fragment(R.layout.fragment_add_habit) {
                 return@setOnClickListener
             }
 
+            val prefs = SharedPrefsHelper(requireContext())
+            val currentUserId = prefs.loggedInUserId
+
             val noulViciu = HabitEntity(
                 habitName = habitName,
-                startDate = selectedDateMillis!!
+                startDate = selectedDateMillis!!,
+                userId = currentUserId
             )
 
             val dao = AppDatabase.getDatabase(requireContext()).habitDao()

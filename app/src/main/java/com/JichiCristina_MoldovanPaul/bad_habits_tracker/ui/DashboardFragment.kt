@@ -14,6 +14,7 @@ import com.jichicristina_moldovanpaul.bad_habits_tracker.R
 import com.jichicristina_moldovanpaul.bad_habits_tracker.data.local.AppDatabase
 import com.jichicristina_moldovanpaul.bad_habits_tracker.data.remote.RetrofitClient
 import com.jichicristina_moldovanpaul.bad_habits_tracker.ui.adapter.HabitAdapter
+import com.jichicristina_moldovanpaul.bad_habits_tracker.utils.SharedPrefsHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -42,7 +43,7 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
 
         val btnLogout = view.findViewById<android.widget.Button>(R.id.btnLogout)
         btnLogout.setOnClickListener {
-            val prefs = com.jichicristina_moldovanpaul.bad_habits_tracker.utils.SharedPrefsHelper(requireContext())
+            val prefs = SharedPrefsHelper(requireContext())
             prefs.isLoggedIn = false
             findNavController().navigate(R.id.action_dashboardFragment_to_loginFragment)
         }
@@ -68,9 +69,11 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
 
         val database = AppDatabase.getDatabase(requireContext())
         val dao = database.habitDao()
+        val prefs = SharedPrefsHelper(requireContext())
+        val userId = prefs.loggedInUserId
 
         viewLifecycleOwner.lifecycleScope.launch {
-            dao.getAllHabits().collect { habitsList ->
+            dao.getHabitsForUser(userId).collect { habitsList ->
                 adapter.submitList(habitsList)
             }
         }
