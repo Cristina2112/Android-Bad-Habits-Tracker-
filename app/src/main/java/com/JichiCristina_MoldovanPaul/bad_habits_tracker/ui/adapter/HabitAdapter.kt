@@ -10,12 +10,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.jichicristina_moldovanpaul.bad_habits_tracker.R
 import com.jichicristina_moldovanpaul.bad_habits_tracker.data.local.HabitEntity
 
-class HabitAdapter : ListAdapter<HabitEntity, HabitAdapter.HabitViewHolder>(HabitDiffCallback()) {
+class HabitAdapter(private val onItemClick: (HabitEntity) -> Unit) : ListAdapter<HabitEntity, HabitAdapter.HabitViewHolder>(HabitDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HabitViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_habit, parent, false)
-        return HabitViewHolder(view)
+        return HabitViewHolder(view, onItemClick)
     }
 
     override fun onBindViewHolder(holder: HabitViewHolder, position: Int) {
@@ -23,7 +23,7 @@ class HabitAdapter : ListAdapter<HabitEntity, HabitAdapter.HabitViewHolder>(Habi
         holder.bind(habit)
     }
 
-    class HabitViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class HabitViewHolder(itemView: View, private val onItemClick: (HabitEntity) -> Unit) : RecyclerView.ViewHolder(itemView) {
         private val tvHabitDetails: TextView = itemView.findViewById(R.id.tvHabitDetails)
 
         fun bind(habit: HabitEntity) {
@@ -32,6 +32,10 @@ class HabitAdapter : ListAdapter<HabitEntity, HabitAdapter.HabitViewHolder>(Habi
             val days = diffInMillis / (1000 * 60 * 60 * 24)
             
             tvHabitDetails.text = "${habit.habitName} — Te-ai lăsat de $days zile!"
+
+            itemView.setOnClickListener {
+                onItemClick(habit)
+            }
         }
     }
 

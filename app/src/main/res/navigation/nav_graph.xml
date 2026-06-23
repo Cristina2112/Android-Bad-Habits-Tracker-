@@ -38,6 +38,11 @@
         <action
             android:id="@+id/action_dashboardFragment_to_addHabitFragment"
             app:destination="@id/addHabitFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/dashboardFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
