@@ -5,6 +5,8 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.navigation.fragment.NavHostFragment
+import com.jichicristina_moldovanpaul.bad_habits_tracker.utils.SharedPrefsHelper
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -16,5 +18,17 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navController = navHostFragment.navController
+        val navGraph = navController.navInflater.inflate(R.navigation.nav_graph)
+
+        val prefs = SharedPrefsHelper(this)
+        if (prefs.isLoggedIn) {
+            navGraph.setStartDestination(R.id.dashboardFragment)
+        } else {
+            navGraph.setStartDestination(R.id.loginFragment)
+        }
+        navController.graph = navGraph
     }
 }
