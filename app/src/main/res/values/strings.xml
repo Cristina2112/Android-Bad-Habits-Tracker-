@@ -1,3 +1,22 @@
 <resources>
     <string name="app_name">Bad_Habits_Tracker</string>
+    
+    <!-- Login & Register -->
+    <string name="prompt_username">Username</string>
+    <string name="prompt_password">Parolă</string>
+    <string name="prompt_motivation">Mesaj motivațional preferat</string>
+    <string name="action_login">Logare</string>
+    <string name="action_register">Creează cont</string>
+    <string name="action_no_account">Nu ai cont? Înregistrează-te</string>
+    <string name="action_back_login">Înapoi la Logare</string>
+    
+    <!-- Dashboard -->
+    <string name="title_daily_tip">Sfatul zilei</string>
+    <string name="action_logout">Ieșire cont</string>
+    <string name="action_add_habit">Adaugă viciu</string>
+    
+    <!-- Add Habit -->
+    <string name="prompt_habit_name">Nume viciu (ex: Fumat)</string>
+    <string name="action_pick_date">Alege data start</string>
+    <string name="action_save">Salvează</string>
 </resources>

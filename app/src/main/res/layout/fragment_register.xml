@@ -4,64 +4,85 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="24dp">
+    android:padding="32dp">
 
-    <EditText
-        android:id="@+id/etUsernameReg"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilUsernameReg"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="Username"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/etPasswordReg"
+        android:hint="@string/prompt_username"
+        app:layout_constraintBottom_toTopOf="@+id/tilPasswordReg"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed" />
+        app:layout_constraintVertical_chainStyle="packed">
 
-    <EditText
-        android:id="@+id/etPasswordReg"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etUsernameReg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilPasswordReg"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:hint="Parolă"
-        android:inputType="textPassword"
-        app:layout_constraintBottom_toTopOf="@+id/etMotivation"
+        android:hint="@string/prompt_password"
+        app:passwordToggleEnabled="true"
+        app:layout_constraintBottom_toTopOf="@+id/tilMotivation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etUsernameReg" />
+        app:layout_constraintTop_toBottomOf="@+id/tilUsernameReg">
 
-    <EditText
-        android:id="@+id/etMotivation"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etPasswordReg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilMotivation"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:hint="Mesaj motivațional preferat"
-        android:inputType="text"
+        android:hint="@string/prompt_motivation"
         app:layout_constraintBottom_toTopOf="@+id/btnCreateAccount"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etPasswordReg" />
+        app:layout_constraintTop_toBottomOf="@+id/tilPasswordReg">
 
-    <Button
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etMotivation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnCreateAccount"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:layout_marginTop="32dp"
-        android:text="Creează cont"
+        android:text="@string/action_register"
+        app:cornerRadius="12dp"
         app:layout_constraintBottom_toTopOf="@+id/tvBackToLogin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etMotivation" />
+        app:layout_constraintTop_toBottomOf="@+id/tilMotivation" />
 
-    <TextView
+    <com.google.android.material.button.MaterialButton
+        style="@style/Widget.MaterialComponents.Button.TextButton"
         android:id="@+id/tvBackToLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:padding="8dp"
-        android:text="Înapoi la Login"
-        android:textColor="@color/black"
-        android:textStyle="bold"
+        android:text="@string/action_back_login"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

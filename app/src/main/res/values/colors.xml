@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <!-- Pastel Theme Colors -->
+    <color name="colorPrimary">#A090FF</color>
+    <color name="colorPrimaryDark">#705DDA</color>
+    <color name="colorSecondary">#8BE2C9</color>
+    <color name="colorBackground">#F4F5FB</color>
+    <color name="colorSurface">#FFFFFF</color>
+    <color name="colorError">#FF8C8C</color>
+    
+    <color name="textColorPrimary">#2D2D3A</color>
+    <color name="textColorSecondary">#7A7A8C</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
 </resources>
