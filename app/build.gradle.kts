@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    namespace = "com.JichiCristina_MoldovanPaul.bad_habits_tracker"
+    namespace = "com.jichicristina_moldovanpaul.bad_habits_tracker"
     compileSdk {
         version = release(36) {
             minorApiLevel = 1
@@ -11,7 +11,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.JichiCristina_MoldovanPaul.bad_habits_tracker"
+        applicationId = "com.jichicristina_moldovanpaul.bad_habits_tracker"
         minSdk = 24
         targetSdk = 36
         versionCode = 1
@@ -44,4 +44,11 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    implementation("androidx.navigation:navigation-fragment-ktx:2.7.7")
+    implementation("androidx.navigation:navigation-ui-ktx:2.7.7")
+    
+    val room_version = "2.6.1"
+    implementation("androidx.room:room-runtime:$room_version")
+    implementation("androidx.room:room-ktx:$room_version")
+    annotationProcessor("androidx.room:room-compiler:$room_version")
 }

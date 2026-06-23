@@ -1,4 +1,4 @@
-package com.JichiCristina_MoldovanPaul.bad_habits_tracker
+package com.jichicristina_moldovanpaul.bad_habits_tracker
 
 import org.junit.Test
 

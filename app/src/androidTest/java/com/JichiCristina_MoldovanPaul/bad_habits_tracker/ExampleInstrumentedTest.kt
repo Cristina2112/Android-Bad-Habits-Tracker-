@@ -1,4 +1,4 @@
-package com.JichiCristina_MoldovanPaul.bad_habits_tracker
+package com.jichicristina_moldovanpaul.bad_habits_tracker
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -19,6 +19,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("com.JichiCristina_MoldovanPaul.bad_habits_tracker", appContext.packageName)
+        assertEquals("com.jichicristina_moldovanpaul.bad_habits_tracker", appContext.packageName)
     }
 }
