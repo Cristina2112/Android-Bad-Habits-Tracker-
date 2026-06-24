@@ -32,6 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:hint="@string/prompt_password"
+        app:helperText="Parola necesită min. o literă mare sau caracter special"
         app:passwordToggleEnabled="true"
         app:layout_constraintBottom_toTopOf="@+id/tilMotivation"
         app:layout_constraintEnd_toEndOf="parent"

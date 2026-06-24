@@ -42,6 +42,11 @@ class AuthViewModel(
     fun register(username: String, password: String, motivation: String) {
         viewModelScope.launch {
             _authState.value = AuthState.Loading
+            val exists = userDao.checkUserExists(username) > 0
+            if (exists) {
+                _authState.value = AuthState.Error("Acest username este deja folosit. Alege altul!")
+                return@launch
+            }
             val newUser = UserEntity(username = username, password = password, motivationMsg = motivation)
             val newId = userDao.insertUser(newUser).toInt()
             authDataStore.saveUserId(newId)

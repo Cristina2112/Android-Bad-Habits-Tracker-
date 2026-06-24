@@ -10,6 +10,9 @@ interface HabitDao {
     @Insert
     suspend fun insertHabit(habit: HabitEntity): Long
 
+    @androidx.room.Update
+    suspend fun updateHabit(habit: HabitEntity): Int
+
     @Query("SELECT * FROM habits WHERE userId = :userId ORDER BY id DESC")
     fun getHabitsForUser(userId: Int): Flow<List<HabitEntity>>
 }

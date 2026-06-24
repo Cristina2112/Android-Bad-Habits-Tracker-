@@ -34,7 +34,7 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
     private val dashboardViewModel: DashboardViewModel by viewModels {
         val database = AppDatabase.getDatabase(requireContext())
         val dataStore = AuthDataStore(requireContext())
-        DashboardViewModelFactory(database.habitDao(), dataStore)
+        DashboardViewModelFactory(database.habitDao(), database.userDao(), dataStore)
     }
 
     private lateinit var habitAdapter: HabitAdapter
@@ -47,41 +47,48 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
         val rvHabits = view.findViewById<RecyclerView>(R.id.rvHabits)
         val fabAddHabit = view.findViewById<FloatingActionButton>(R.id.fabAddHabit)
 
-        habitAdapter = HabitAdapter { habit ->
-            val currentTime = System.currentTimeMillis()
-            val diffInMillis = currentTime - habit.startDate
-            val days = diffInMillis / (1000 * 60 * 60 * 24)
-            val zileStr = if (days == 1L) "o zi" else "$days zile"
-
-            viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
-                try {
-                    val request = GroqRequest(
-                        model = "llama-3.3-70b-versatile",
-                        messages = listOf(
-                            GroqMessage(role = "system", content = "Ești un prieten glumeț și motivant. Răspunde exclusiv în limba română corectă gramatical. Nu folosi caractere speciale sau formatare markdown (fără steluțe). Răspunde scurt (maxim 2 propoziții)."),
-                            GroqMessage(role = "user", content = "M-am lăsat de ${habit.habitName} de $zileStr. Fă o glumă scurtă despre asta ca să mă motivezi să rezist!")
+        habitAdapter = HabitAdapter(
+            onItemClick = { habit ->
+                viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
+                    try {
+                        val request = GroqRequest(
+                            model = "llama-3.3-70b-versatile",
+                            messages = listOf(
+                                GroqMessage(role = "system", content = "Ești un asistent util care oferă sfaturi scurte (1 propoziție)."),
+                                GroqMessage(role = "user", content = "Oferă-mi un scurt sfat despre cum să mă las de ${habit.habitName}")
+                            )
                         )
-                    )
-                    val response = RetrofitClient.api.generateAdvice(request)
-                    withContext(Dispatchers.Main) {
-                        val advice = response.choices?.firstOrNull()?.message?.content ?: "Fii puternic în continuare!"
-                        AlertDialog.Builder(requireContext())
-                            .setTitle("Sfat pentru ${habit.habitName}")
-                            .setMessage(advice)
-                            .setPositiveButton("Am înțeles", null)
-                            .show()
-                    }
-                } catch (e: Exception) {
-                    withContext(Dispatchers.Main) {
-                        Toast.makeText(requireContext(), "Eroare rețea", Toast.LENGTH_SHORT).show()
+                        val response = RetrofitClient.api.generateAdvice(request)
+                        withContext(Dispatchers.Main) {
+                            val advice = response.choices?.firstOrNull()?.message?.content ?: "Fii puternic în continuare!"
+                            AlertDialog.Builder(requireContext())
+                                .setTitle("Sfat pentru ${habit.habitName}")
+                                .setMessage(advice)
+                                .setPositiveButton("Am înțeles", null)
+                                .show()
+                        }
+                    } catch (e: Exception) {
+                        withContext(Dispatchers.Main) {
+                            Toast.makeText(requireContext(), "Eroare rețea", Toast.LENGTH_SHORT).show()
+                        }
                     }
                 }
+            },
+            onResetClick = { habit ->
+                AlertDialog.Builder(requireContext())
+                    .setTitle("Ești sigur?")
+                    .setMessage("Chiar vrei să resetezi zilele la zero pentru '${habit.habitName}'?\n\nNu uita că progresul tău contează, iar un mic pas înapoi nu șterge efortul de până acum! Mai gândește-te puțin înainte să renunți.")
+                    .setPositiveButton("Da, am recidivat") { _, _ ->
+                        dashboardViewModel.resetHabit(habit)
+                        Toast.makeText(requireContext(), "Contorul a fost resetat. Capul sus, o iei de la capăt!", Toast.LENGTH_SHORT).show()
+                    }
+                    .setNegativeButton("Anulează", null)
+                    .show()
             }
-        }
+        )
         rvHabits.layoutManager = LinearLayoutManager(requireContext())
         rvHabits.adapter = habitAdapter
 
-        // Fetch advice at launch
         viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
             try {
                 val request = GroqRequest(
@@ -98,13 +105,17 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
                     }
                 }
             } catch (e: Exception) {
+                val fallbackMotivation = dashboardViewModel.getCurrentUserMotivation()
                 withContext(Dispatchers.Main) {
-                    tvDailyTip.text = "Sfatul zilei: Fii mai bun decât ieri!"
+                    if (!fallbackMotivation.isNullOrBlank()) {
+                        tvDailyTip.text = "Motto-ul tău: $fallbackMotivation"
+                    } else {
+                        tvDailyTip.text = "Sfatul zilei: Fii mai bun decât ieri!"
+                    }
                 }
             }
         }
 
-        // Observe Habits from View Model
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 dashboardViewModel.habitsFlow.collect { habits ->

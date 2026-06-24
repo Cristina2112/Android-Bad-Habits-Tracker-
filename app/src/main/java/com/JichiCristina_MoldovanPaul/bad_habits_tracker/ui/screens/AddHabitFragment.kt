@@ -35,7 +35,7 @@ class AddHabitFragment : Fragment(R.layout.fragment_add_habit) {
 
         btnPickDate.setOnClickListener {
             val calendar = Calendar.getInstance()
-            DatePickerDialog(
+            val dialog = DatePickerDialog(
                 requireContext(),
                 { _, year, month, dayOfMonth ->
                     val selectedCal = Calendar.getInstance()
@@ -46,7 +46,9 @@ class AddHabitFragment : Fragment(R.layout.fragment_add_habit) {
                 calendar.get(Calendar.YEAR),
                 calendar.get(Calendar.MONTH),
                 calendar.get(Calendar.DAY_OF_MONTH)
-            ).show()
+            )
+            dialog.datePicker.maxDate = System.currentTimeMillis()
+            dialog.show()
         }
 
         btnSave.setOnClickListener {

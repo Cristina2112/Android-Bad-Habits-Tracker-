@@ -48,6 +48,13 @@ class RegisterFragment : Fragment(R.layout.fragment_register) {
                 return@setOnClickListener
             }
 
+            val hasUppercase = password.any { it.isUpperCase() }
+            val hasSpecial = password.any { !it.isLetterOrDigit() }
+            if (!hasUppercase && !hasSpecial) {
+                Toast.makeText(requireContext(), "Parola trebuie să conțină măcar o literă mare sau un caracter special!", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
             authViewModel.register(username, password, motivation)
         }
 
