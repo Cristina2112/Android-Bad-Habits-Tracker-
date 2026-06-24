@@ -1,7 +1,7 @@
-package com.jichicristina_moldovanpaul.bad_habits_tracker.data.remote
+package com.jichicristina_moldovanpaul.bad_habits_tracker.network
 
-import com.jichicristina_moldovanpaul.bad_habits_tracker.data.remote.models.GroqRequest
-import com.jichicristina_moldovanpaul.bad_habits_tracker.data.remote.models.GroqResponse
+import com.jichicristina_moldovanpaul.bad_habits_tracker.network.models.GroqRequest
+import com.jichicristina_moldovanpaul.bad_habits_tracker.network.models.GroqResponse
 import retrofit2.http.Body
 import retrofit2.http.Headers
 import retrofit2.http.POST

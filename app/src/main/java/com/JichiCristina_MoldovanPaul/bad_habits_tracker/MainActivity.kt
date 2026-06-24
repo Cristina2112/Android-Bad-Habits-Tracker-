@@ -6,7 +6,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.navigation.fragment.NavHostFragment
-import com.jichicristina_moldovanpaul.bad_habits_tracker.utils.SharedPrefsHelper
+import com.jichicristina_moldovanpaul.bad_habits_tracker.data.local.AuthDataStore
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,8 +25,10 @@ class MainActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
         val navGraph = navController.navInflater.inflate(R.navigation.nav_graph)
 
-        val prefs = SharedPrefsHelper(this)
-        if (prefs.isLoggedIn) {
+        val dataStore = AuthDataStore(this)
+        val loggedInUserId = runBlocking { dataStore.loggedInUserIdFlow.first() }
+
+        if (loggedInUserId != -1) {
             navGraph.setStartDestination(R.id.dashboardFragment)
         } else {
             navGraph.setStartDestination(R.id.loginFragment)

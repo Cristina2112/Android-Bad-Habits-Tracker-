@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface HabitDao {
     @Insert
-    fun insertHabit(habit: HabitEntity): Long
+    suspend fun insertHabit(habit: HabitEntity): Long
 
     @Query("SELECT * FROM habits WHERE userId = :userId ORDER BY id DESC")
     fun getHabitsForUser(userId: Int): Flow<List<HabitEntity>>

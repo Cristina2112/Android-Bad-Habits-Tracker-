@@ -1,4 +1,4 @@
-package com.jichicristina_moldovanpaul.bad_habits_tracker.data.remote.models
+package com.jichicristina_moldovanpaul.bad_habits_tracker.network.models
 
 data class GroqRequest(
     val model: String,

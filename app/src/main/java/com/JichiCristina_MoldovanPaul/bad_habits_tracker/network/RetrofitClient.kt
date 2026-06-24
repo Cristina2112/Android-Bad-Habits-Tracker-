@@ -1,4 +1,4 @@
-package com.jichicristina_moldovanpaul.bad_habits_tracker.data.remote
+package com.jichicristina_moldovanpaul.bad_habits_tracker.network
 
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -8,10 +8,15 @@ import java.util.concurrent.TimeUnit
 object RetrofitClient {
     private const val BASE_URL = "https://api.groq.com/"
 
+    private val loggingInterceptor = okhttp3.logging.HttpLoggingInterceptor().apply {
+        level = okhttp3.logging.HttpLoggingInterceptor.Level.BODY
+    }
+
     private val okHttpClient = OkHttpClient.Builder()
         .connectTimeout(60, TimeUnit.SECONDS)
         .readTimeout(60, TimeUnit.SECONDS)
         .writeTimeout(60, TimeUnit.SECONDS)
+        .addInterceptor(loggingInterceptor)
         .addInterceptor { chain ->
             val request = chain.request().newBuilder()
                 .addHeader("Authorization", "Bearer ${com.jichicristina_moldovanpaul.bad_habits_tracker.BuildConfig.GROQ_API_KEY}")
