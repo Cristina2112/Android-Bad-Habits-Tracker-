@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.ksp)
@@ -19,6 +21,21 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        val properties = Properties()
+        val localPropsFile = project.rootProject.file("local.properties")
+        if (localPropsFile.exists()) {
+            properties.load(localPropsFile.inputStream())
+        }
+        val groqApiKey = properties.getProperty("GROQ_API_KEY", "\"\"")
+        // Dacă utilizatorul a pus ghilimele în local.properties, valoarea le va conține deja. 
+        // Dacă nu, trebuie să ne asigurăm că e un String valid în Java adăugându-le noi.
+        val finalKey = if (groqApiKey.startsWith("\"") && groqApiKey.endsWith("\"")) groqApiKey else "\"$groqApiKey\""
+        buildConfigField("String", "GROQ_API_KEY", finalKey)
+    }
+
+    buildFeatures {
+        buildConfig = true
     }
 
     buildTypes {
