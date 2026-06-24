@@ -48,13 +48,18 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
         val fabAddHabit = view.findViewById<FloatingActionButton>(R.id.fabAddHabit)
 
         habitAdapter = HabitAdapter { habit ->
+            val currentTime = System.currentTimeMillis()
+            val diffInMillis = currentTime - habit.startDate
+            val days = diffInMillis / (1000 * 60 * 60 * 24)
+            val zileStr = if (days == 1L) "o zi" else "$days zile"
+
             viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
                 try {
                     val request = GroqRequest(
                         model = "llama-3.3-70b-versatile",
                         messages = listOf(
-                            GroqMessage(role = "system", content = "Ești un asistent util care oferă sfaturi scurte (1 propoziție)."),
-                            GroqMessage(role = "user", content = "Oferă-mi un scurt sfat despre cum să mă las de ${habit.habitName}")
+                            GroqMessage(role = "system", content = "Ești un prieten glumeț și motivant. Răspunde exclusiv în limba română corectă gramatical. Nu folosi caractere speciale sau formatare markdown (fără steluțe). Răspunde scurt (maxim 2 propoziții)."),
+                            GroqMessage(role = "user", content = "M-am lăsat de ${habit.habitName} de $zileStr. Fă o glumă scurtă despre asta ca să mă motivezi să rezist!")
                         )
                     )
                     val response = RetrofitClient.api.generateAdvice(request)
@@ -82,7 +87,7 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
                 val request = GroqRequest(
                     model = "llama-3.3-70b-versatile",
                     messages = listOf(
-                        GroqMessage(role = "system", content = "Dă-mi un citat motivațional scurt (o propoziție).")
+                        GroqMessage(role = "system", content = "Dă-mi un citat motivațional scurt (o propoziție). Scrie exclusiv în limba română corectă, fără formatări markdown (fără steluțe) și fără alte introduceri.")
                     )
                 )
                 val response = RetrofitClient.api.generateAdvice(request)
@@ -114,6 +119,11 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
                 .setPopUpTo(R.id.dashboardFragment, true)
                 .build()
             findNavController().navigate(R.id.action_dashboardFragment_to_loginFragment, null, navOptions)
+        }
+
+        val btnTherapy = view.findViewById<Button>(R.id.btnTherapy)
+        btnTherapy.setOnClickListener {
+            findNavController().navigate(R.id.action_dashboardFragment_to_therapyFragment)
         }
 
         fabAddHabit.setOnClickListener {

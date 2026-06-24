@@ -46,6 +46,9 @@
             app:destination="@id/loginFragment"
             app:popUpTo="@id/dashboardFragment"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_therapyFragment"
+            app:destination="@id/therapyFragment" />
     </fragment>
 
     <fragment
@@ -58,6 +61,13 @@
             app:destination="@id/dashboardFragment"
             app:popUpTo="@id/dashboardFragment"
             app:popUpToInclusive="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/therapyFragment"
+        android:name="com.jichicristina_moldovanpaul.bad_habits_tracker.ui.screens.TherapyFragment"
+        android:label="Terapie Animale"
+        tools:layout="@layout/fragment_therapy">
     </fragment>
 
 </navigation>

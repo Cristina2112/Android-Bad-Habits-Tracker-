@@ -6,18 +6,6 @@
     android:layout_height="match_parent"
     android:padding="32dp">
 
-    <ImageView
-        android:id="@+id/ivLogo"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:src="@android:drawable/ic_menu_myplaces"
-        app:tint="?attr/colorPrimary"
-        app:layout_constraintBottom_toTopOf="@+id/tilUsername"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed" />
-
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tilUsername"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -28,7 +16,8 @@
         app:layout_constraintBottom_toTopOf="@+id/tilPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ivLogo">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etUsername"
